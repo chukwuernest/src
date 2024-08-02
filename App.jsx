@@ -22,12 +22,16 @@ function App() {
     console.log(todoList)
   }, [todoList])
 
+  const removeTodo = (id) => {
+    const updatedTodoList = todoList.splice((item) => item.id !== id)
+    setTodoList(updatedTodoList)
+  }
   return (
     <>
       <h1>Todo List</h1>
-      <TodoList todoList={todoList} />
       <AddTodoForm onAddTodo={addTodo} />
       <p>{}</p>
+      <TodoList todoList={todoList} onRemoveTodo={removeTodo} />
     </>
   )
 }
