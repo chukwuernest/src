@@ -1,19 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+
 import './App.css'
 import TodoList from './TodoList'
 import AddTodoForm from '../AddTodoForm'
 
 function App() {
-  const [newTodo, setNewTodo] = useState('')
+  let [newTodo, setNewTodo] = useState('')
+  function addTodo(newTodo) {
+    setTodoList([...todoList, newTodo])
+    console.log(newTodo)
+  }
+  const useSemiPersistentState = () => {
+    const savedTodoList = localStorage.getItem('savedTodoList')
+    return savedTodoList ? JSON.parse(savedTodoList) : []
+  }
+
+  let [todoList, setTodoList] = useState(useSemiPersistentState)
+
+  useEffect(() => {
+    localStorage.setItem('savedTodoList', JSON.stringify(todoList))
+    console.log(todoList)
+  }, [todoList])
 
   return (
     <>
       <h1>Todo List</h1>
-      <TodoList />
-      <AddTodoForm onAddTodo={setNewTodo} />
-      <p>{newTodo}</p>
+      <TodoList todoList={todoList} />
+      <AddTodoForm onAddTodo={addTodo} />
+      <p>{}</p>
     </>
   )
 }
